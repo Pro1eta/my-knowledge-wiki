@@ -7,7 +7,6 @@ on:
       - main
 
 jobs:
-  if: ${{ github.repository == 'Pro1eta/my-knowledge-wiki' }} 
   deploy:
     runs-on: ubuntu-latest
 
