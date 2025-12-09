@@ -17,7 +17,7 @@ const config: QuartzConfig = {
     },
     locale: "zh-CN",
     baseUrl: "wiki.proleta.org",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    ignorePatterns: ["private", "templates", ".obsidian", ".trash", "post-copies"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
