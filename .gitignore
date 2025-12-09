@@ -11,5 +11,4 @@ private/
 replit.nix
 
 # template files, copies.
-./content/post-copies
-./content/templates
+./content/templates/
