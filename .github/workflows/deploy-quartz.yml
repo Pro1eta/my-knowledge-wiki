@@ -35,7 +35,7 @@ jobs:
           npx quartz build
 
       - name: Deploy with rsync # 步骤5: 使用 rsync 部署到服务器
-        uses: easingthemes/ssh-deploy@v4.1.10
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           # SSH 认证信息，从 GitHub Secrets 中获取
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
