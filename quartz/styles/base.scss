@@ -9,6 +9,7 @@ html {
   text-size-adjust: none;
   overflow-x: hidden;
   width: 100vw;
+  font-size: 18px;
 }
 
 body {
@@ -152,11 +153,11 @@ a {
 }
 
 .page {
-  max-width: calc(#{map.get($breakpoints, desktop)} + 300px);
+  max-width: calc(#{map.get($breakpoints, desktop)} + 450px);
   margin: 0 auto;
   & article {
     & > h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
 
     & li:has(> input[type="checkbox"]) {
@@ -389,7 +390,7 @@ h6 {
 
 // typography improvements
 h1 {
-  font-size: 1.75rem;
+  font-size: 1.8rem;
   margin-top: 2.25rem;
   margin-bottom: 1rem;
 }
@@ -506,7 +507,9 @@ code {
 tbody,
 li,
 p {
-  line-height: 1.6rem;
+  line-height: 1.8rem;
+  // margin-top: 1.1rem;
+  // margin-bottom: 1.1rem;
 }
 
 .table-container {

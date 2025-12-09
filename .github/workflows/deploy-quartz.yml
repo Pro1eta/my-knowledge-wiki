@@ -1,0 +1,51 @@
+# .github/workflows/deploy-quartz.yml
+name: Deploy Quartz Wiki
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  if: ${{ github.repository == 'Pro1eta/my-knowledge-wiki' }} 
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js and npm 
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # Quartz 通常需要较新的 Node.js 版本，如 20 或 22
+          cache: 'npm'       # Quartz 默认使用 npm，所以缓存 npm 依赖
+
+      - name: Install Node.js dependencies # 步骤3: 安装项目依赖 (npm i)
+        run: npm install # Quartz 通常使用 npm，这里是安装依赖的命令
+
+      - name: Build Quartz Site # 步骤4: 构建 Quartz 静态网站 (npx quartz create; npx quartz build)
+        # Quartz 的构建过程需要先 create 再 build。
+        # create 通常会生成必要的文件结构，build 会生成最终的 public/ 目录。
+        # 确保你在仓库中已经包含了 Quartz 的所有源文件，
+        # 如果 `npx quartz create` 是初始化步骤，可能不适合每次运行。
+        # 如果你的仓库已经包含了 Quartz 的基本结构和内容，通常只需要 `npx quartz build`。
+        # 我将保留 create 命令，但如果你觉得多余，可以移除。
+        run: |
+          npx quartz create
+          npx quartz build
+
+      - name: Deploy with rsync # 步骤5: 使用 rsync 部署到服务器
+        uses: easingthemes/ssh-deploy@v4.1.10
+        with:
+          # SSH 认证信息，从 GitHub Secrets 中获取
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}         # 你的服务器指纹
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}               # 服务器的 IP 地址或域名
+          REMOTE_USER: ${{ secrets.SERVER_USERNAME }}         # 部署用户的用户名
+          REMOTE_PORT: ${{ secrets.SERVER_PORT }}                 # SSH 端口
+
+          # rsync 的源路径和目标路径
+          SOURCE: "public/" # IMPORTANT: Quartz 默认将构建产物输出到 'public/' 目录
+          TARGET: "/apps/proletawiki/public" # IMPORTANT: 这是你服务器上 Nginx 指向的部署路径
+          ARGS: "-avz --delete" # rsync 参数：archive, verbose, compress, 删除目标中不存在于源的文件
