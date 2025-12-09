@@ -12,3 +12,4 @@ replit.nix
 
 # template files, copies.
 ./content/templates/
+./content/post-copies/
